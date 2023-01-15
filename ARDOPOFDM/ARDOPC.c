@@ -697,6 +697,8 @@ void ardopmain()
 
         //////////////////////////
 	// Added hamlib - 20230115
+        // NONE|BUG|ERR|WARN|VERBOSE|TRACE
+        rig_set_debug(RIG_DEBUG_WARN);
         rig_load_all_backends();
         // Use 4 for flrig
 	rig = rig_init(2);
@@ -3105,6 +3107,7 @@ VOID processargs(int argc, char * argv[])
 		           hamlibModel = 2;
 
                         PTTMode = PTTHAMLIB;
+                        RadioControl = TRUE;
 		        break;
 
 		case 'l':
