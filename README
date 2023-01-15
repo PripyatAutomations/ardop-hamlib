@@ -19,3 +19,15 @@ Edit the ARDOPC.c or wait til i get around to adding a getenv() ;)
 
 See -H option
 
+
+Install needed dev packages:
+	apt install  libhamlib-dev libasound2-dev
+
+Copy asoundrc to ~/.asoundrc
+	cp asoundrc ~/.asoundrc
+
+If you use flrig, try this:
+	rigctld -m 4 -P RIG -t 4532 &
+
+It will run rigctld talking to flrig
+
