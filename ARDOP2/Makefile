@@ -4,6 +4,8 @@ OBJS = LinSerial.o KISSModule.o pktARDOP.o pktSession.o BusyDetect.o i2cDisplay.
 
 # Configuration:
 CFLAGS = -DLINBPQ -MMD -g 
+LDFLAGS := -Xlinker -Map=output.map -lrt -lm -lpthread -lasound
+LDFLAGS += -lhamlib
 CC = gcc
 
 vpath %.c /mnt/ardop2
@@ -13,7 +15,7 @@ vpath %.o ./
 all: ardop2
 			
 ardop2: $(OBJS)
-	gcc $(OBJS) -Xlinker -Map=output.map -lrt -lm -lpthread -lasound -o ardop2
+	gcc $(OBJS) ${LDFLAGS} -o ardop2
 
 
 -include *.d

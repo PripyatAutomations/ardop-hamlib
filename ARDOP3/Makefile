@@ -4,6 +4,8 @@ OBJS = Viterbi.o ackbycarrier.o LinSerial.o KISSModule.o pktARDOP.o pktSession.o
 
 # Configuration:
 CFLAGS = -DLINBPQ -MMD -g 
+LDFLAGS := -Xlinker -Map=output.map -lrt -lm -lpthread -lasound 
+LDFLAGS += -lhamlib
 CC = gcc
 
 vpath %.c /mnt/Source/TeensyProjects/ARDOP3
@@ -13,7 +15,7 @@ vpath %.o ./
 all: ardop3
 			
 ardop3: $(OBJS)
-	gcc $(OBJS) -Xlinker -Map=output.map -lrt -lm -lpthread -lasound -o ardop3
+	gcc $(OBJS) ${LDFLAGS} -o ardop3
 
 
 -include *.d

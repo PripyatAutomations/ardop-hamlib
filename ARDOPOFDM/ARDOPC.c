@@ -12,6 +12,13 @@
 #define closesocket close
 #endif
 
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <hamlib/rig.h>
+RIG *rig;
+
 #include "Version.h"
 
 #include "ARDOPC.h"
@@ -685,6 +692,18 @@ void ardopmain()
 
 	InitSound();
 
+        //////////////////////////
+	// Added hamlib - 20230115
+        rig_load_all_backends();
+        // Use 4 for flrig
+	rig = rig_init(2);
+	int retcode = rig_open(rig);
+        if (retcode != RIG_OK) {
+                printf("rig_open: error = %s\n", rigerror(retcode));
+                exit(2);
+        }
+        //////////////////////////
+
 	if (SerialMode)
 		SerialHostInit();
 	else
@@ -726,6 +745,13 @@ void ardopmain()
 		closesocket(TCPDataSock);
 		closesocket(PktSock);
 	}
+	//////////////////////////////
+	// Added hamlib - 20230115
+	// hamlib cleanup
+	rig_close(rig);
+	rig_cleanup(rig);
+	//////////////////////////////
+
 	return;
 }
 

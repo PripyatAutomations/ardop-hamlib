@@ -4,12 +4,15 @@ OBJS = ofdm.o LinSerial.o KISSModule.o pktARDOP.o pktSession.o BusyDetect.o i2cD
 
 # Configuration:
 CFLAGS = -DLINBPQ -MMD -g 
+LDFLAGS := -Xlinker -Map=output.map -lrt -lm -lpthread -lasound
+LDFLAGS += -lhamlib
+
 CC = gcc
 	                       
 all: ardopc
 			
 ardopc: $(OBJS)
-	gcc $(OBJS) -Xlinker -Map=output.map -lrt -lm -lpthread -lasound -o ardop1ofdm
+	gcc $(OBJS) ${LDFLAGS} -o ardop1ofdm
 
 
 -include *.d
