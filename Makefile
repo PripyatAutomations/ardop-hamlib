@@ -12,11 +12,18 @@ install_files += ARDOP2/ardop2
 install_files += ARDOPC/ardopc
 install_files += ARDOPOFDM/ardopofdm
 
-all clean:
+all:
 	@for i in ${subdirs}; do \
 	   echo "Making $@ in $$i"; \
 	   ${MAKE} -s -C $$i $@; \
 	done
+
+clean:
+	@for i in ${subdirs}; do \
+	   echo "Making $@ in $$i"; \
+	   ${MAKE} -s -C $$i clean; \
+	done
+	${RM} *.log
 
 install: ${install_files}
 	@for i in ${install_files}; do \
