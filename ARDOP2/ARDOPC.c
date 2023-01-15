@@ -663,8 +663,7 @@ void ardopmain()
         rig_set_debug(RIG_DEBUG_WARN);
 
         rig_load_all_backends();
-        // Use 4 for flrig
-	rig = rig_init(2);
+        rig = rig_init(hamlibModel);
 	int retcode = rig_open(rig);
         if (retcode != RIG_OK) {
                 printf("rig_open: error = %s\n", rigerror(retcode));
