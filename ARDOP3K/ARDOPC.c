@@ -131,6 +131,9 @@ HANDLE hPTTDevice = 0;
 char PTTPort[80] = "";			// Port for Hardware PTT - may be same as control port.
 int PTTBAUD = 19200;
 
+int useHamlib = 0;	// use hamlib for PTT?
+int hamlibModel = 0;	// hamlib model
+
 UCHAR PTTOnCmd[64];
 UCHAR PTTOnCmdLen = 0;
 
@@ -2905,6 +2908,7 @@ extern char LogDir[256];
 
 static struct option long_options[] =
 {
+	{"hamlib", required_argument, 	    0, 'H'},
 	{"logdir",  required_argument, 0 , 'l'},
 	{"ptt",  required_argument, 0 , 'p'},
 	{"cat",  required_argument, 0 , 'c'},
@@ -2933,6 +2937,7 @@ char HelpScreen[] =
 	"-u string or --unkeystring string String (In HEX) to send to the radio to unkeykey PTT\n"
 	"-L use Left Channel of Soundcard in stereo mode\n"
 	"-R use Right Channel of Soundcard in stereo mode\n"
+	"-H model or --hamlib model        Select the hamlib model for PTT\n"
 	"\n"
 	" CAT and RTS PTT can share the same port.\n"
 	" See the ardop documentation for more information on cat and ptt options\n"
@@ -2949,7 +2954,7 @@ VOID processargs(int argc, char * argv[])
 	{		
 		int option_index = 0;
 
-		c = getopt_long(argc, argv, "l:c:p:g::k:u:hLR", long_options, &option_index);
+		c = getopt_long(argc, argv, "H:l:c:p:g::k:u:hLR", long_options, &option_index);
 
 		// Check for end of operation or error
 		if (c == -1)
@@ -2963,6 +2968,16 @@ VOID processargs(int argc, char * argv[])
 			printf("ARDOPC Version %s\n", ProductVersion);
 			printf ("%s", HelpScreen);
 			exit(0);
+
+		case 'H':
+			useHamlib = 1;
+
+			if (optarg)
+		           hamlibModel = atoi(optarg);
+		        else
+		           hamlibModel = 2;
+                        PTTMode = PTTHAMLIB;
+		        break;
 
 		case 'l':
 			strcpy(LogDir, optarg);

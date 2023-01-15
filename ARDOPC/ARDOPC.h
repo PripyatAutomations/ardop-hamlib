@@ -465,6 +465,7 @@ extern int PTTBAUD;
 #define PTTRTS		1
 #define PTTDTR		2
 #define PTTCI_V		4
+#define PTTHAMLIB       8
 
 extern UCHAR PTTOnCmd[];
 extern UCHAR PTTOnCmdLen;

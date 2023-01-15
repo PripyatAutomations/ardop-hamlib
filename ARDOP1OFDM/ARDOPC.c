@@ -138,6 +138,8 @@ UCHAR PTTOffCmdLen = 0;
 
 int PTTMode = PTTRTS;				// PTT Control Flags.
 
+int useHamlib = 0;	// use hamlib for PTT?
+int hamlibModel = 0;	// hamlib model
 // Stats
 
 //    Public Structure QualityStats
@@ -3142,11 +3144,12 @@ extern BOOL UseRight;
 
 static struct option long_options[] =
 {
-	{"ptt",  required_argument, 0 , 'p'},
-	{"cat",  required_argument, 0 , 'c'},
-	{"keystring",  required_argument, 0 , 'k'},
-	{"unkeystring",  required_argument, 0 , 'u'},
-	{"help",  no_argument, 0 , 'h'},
+	{"hamlib", required_argument, 	    0, 'H'},
+	{"ptt",  required_argument, 	    0, 'p'},
+	{"cat",  required_argument, 	    0, 'c'},
+	{"keystring",  required_argument,   0, 'k'},
+	{"unkeystring",  required_argument, 0, 'u'},
+	{"help",  no_argument, 		    0, 'h'},
 	{ NULL , no_argument , NULL , no_argument }
 };
 
@@ -3166,6 +3169,7 @@ char HelpScreen[] =
 	"-p device or --ptt device         Device to use for PTT control using RTS\n"
 	"-k string or --keystring string   String (In HEX) to send to the radio to key PTT\n"
 	"-u string or --unkeystring string String (In HEX) to send to the radio to unkeykey PTT\n"
+	"-H model or --hamlib model        Select the hamlib model for PTT\n"
 	"-L use Left Channel of Soundcard in stereo mode\n"
 	"-R use Right Channel of Soundcard in stereo mode\n"
 	"\n"
@@ -3184,7 +3188,7 @@ VOID processargs(int argc, char * argv[])
 	{		
 		int option_index = 0;
 
-		c = getopt_long(argc, argv, "c:p:g::k:u:hLR", long_options, &option_index);
+		c = getopt_long(argc, argv, "H:c:p:g::k:u:hLR", long_options, &option_index);
 
 		// Check for end of operation or error
 		if (c == -1)
@@ -3198,7 +3202,18 @@ VOID processargs(int argc, char * argv[])
 			printf("ARDOPC Version %s\n", ProductVersion);
 			printf ("%s", HelpScreen);
 			exit(0);
-			
+			break;
+
+		case 'H':
+			useHamlib = 1;
+
+			if (optarg)
+		           hamlibModel = atoi(optarg);
+		        else
+		           hamlibModel = 2;
+		        PTTMode = PTTHAMLIB;
+		        break;
+
 		case 'g':
 			if (optarg)
 				pttGPIOPin = atoi(optarg);

@@ -1586,6 +1586,9 @@ void SoundFlush()
 	return;
 }
 
+#include <hamlib/rig.h>
+extern RIG *rig;
+
 VOID RadioPTT(int PTTState)	
 {
 #ifdef __ARM_ARCH
@@ -1599,6 +1602,20 @@ VOID RadioPTT(int PTTState)
 				COMSetRTS(hPTTDevice);
 			else
 				COMClearRTS(hPTTDevice);
+
+                if (PTTMode & PTTHAMLIB) {
+                   int retcode = -1;
+
+                   if (PTTState) {
+                      retcode = rig_set_ptt(rig, RIG_VFO_A, RIG_PTT_ON );
+                   } else {
+                      retcode = rig_set_ptt(rig, RIG_VFO_A, RIG_PTT_OFF );
+                   }
+
+                   if (retcode != RIG_OK ) {
+                      printf("rig_set_ptt: error = %s \n", rigerror(retcode));
+                   }
+                }
 
 		if (PTTMode & PTTDTR)
 			if (PTTState)

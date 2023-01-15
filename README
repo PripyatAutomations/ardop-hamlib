@@ -16,3 +16,6 @@ These have all been modified to use hamlib for PTT.
 They are setup to use model 2 (RIGCTL NET) but can use 4 (FLRIG) too.
 
 Edit the ARDOPC.c or wait til i get around to adding a getenv() ;)
+
+See -H option
+
