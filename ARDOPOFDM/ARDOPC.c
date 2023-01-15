@@ -3100,10 +3100,13 @@ VOID processargs(int argc, char * argv[])
 		case 'H':
 			useHamlib = 1;
 
-			if (optarg)
+			if (optarg) {
 		           hamlibModel = atoi(optarg);
-		        else
+			   printf("Hamlib: Selected rig model %d\n", hamlibModel);
+		        } else	{ // default to rigctld
+		           printf("Hamlib: defaulting to rigctld driver (2)\n");
 		           hamlibModel = 2;
+		        }
 
                         PTTMode = PTTHAMLIB;
                         RadioControl = TRUE;
